@@ -1,0 +1,44 @@
+#include <iostream>
+#include <fstream> 
+#include <string>
+
+int main() {
+    
+    std::ofstream outFile("example.txt"); 
+    
+    if (!outFile) {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return 1;
+    }
+    
+    
+    outFile << "Hello, this is a test file!" << std::endl;
+    outFile << "This file contains some sample text." << std::endl;
+    outFile << "File handling in C++ is fun!" << std::endl;
+    
+   
+    outFile.close();
+    std::cout << "Information written to file successfully." << std::endl;
+
+    
+    std::ifstream inFile("example.txt"); 
+    
+    if (!inFile) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return 1;
+    }
+    
+    std::string line;
+    
+    
+    std::cout << "Reading information from file:" << std::endl;
+    while (std::getline(inFile, line)) {
+        std::cout << line << std::endl;
+    }
+    
+   
+    inFile.close();
+    std::cout << "File reading complete." << std::endl;
+
+    return 0;
+}

@@ -1,0 +1,93 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Publication {
+protected:
+    string title;
+    float price;
+
+public:
+    void add() {
+        cin.ignore();
+        cout << "\nEnter Title of the Publication: ";
+        getline(cin, title);
+        cout << "Enter Price of Publication: ";
+        cin >> price;
+    }
+
+    void display() const {
+        cout << "\nTitle: " << title << "\nPrice: " << price;
+    }
+};
+
+class Book : public Publication {
+    int pageCount;
+
+public:
+    void add() {
+        Publication::add();
+        cout << "Enter Page Count: ";
+        cin >> pageCount;
+        if (pageCount <= 0) pageCount = 0;
+    }
+
+    void display() const {
+        Publication::display();
+        cout << "\nPages: " << pageCount;
+    }
+};
+
+class Tape : public Publication {
+    float playTime;
+
+public:
+    void add() {
+        Publication::add();
+        cout << "Enter Play Time (minutes): ";
+        cin >> playTime;
+        if (playTime <= 0) playTime = 0;
+    }
+
+    void display() const {
+        Publication::display();
+        cout << "\nPlay Time: " << playTime << " min";
+    }
+};
+
+int main() {
+    Book books[10];
+    Tape tapes[10];
+    int choice, bookCount = 0, tapeCount = 0;
+
+    do {
+        cout << "\n1. Add Book\n2. Add Tape\n3. Show Books\n4. Show Tapes\n5. Exit\nChoice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                if (bookCount < 10) books[bookCount++].add();
+                else cout << "\nBook database full!";
+                break;
+            case 2:
+                if (tapeCount < 10) tapes[tapeCount++].add();
+                else cout << "\nTape database full!";
+                break;
+            case 3:
+                for (int i = 0; i < bookCount; i++) books[i].display();
+                break;
+            case 4:
+                for (int i = 0; i < tapeCount; i++) tapes[i].display();
+                break;
+            case 5:
+                cout << "\nExiting...";
+                break;
+            default:
+                cout << "\nInvalid choice!";
+        }
+    } while (choice != 5);
+
+    return 0;
+}
+
+

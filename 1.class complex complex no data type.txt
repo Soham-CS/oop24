@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+class Complex {
+private:
+    double real, imag; 
+
+public:
+  
+    Complex(double r = 0, double i = 0) : real(r), imag(i) {}
+
+   
+    Complex operator+(const Complex& other) {
+        return Complex(real + other.real, imag + other.imag);
+    }
+
+ 
+    Complex operator*(const Complex& other) {
+        double realPart = real * other.real - imag * other.imag;
+        double imagPart = real * other.imag + imag * other.real;
+        return Complex(realPart, imagPart);
+    }
+
+    
+    friend ostream& operator<<(ostream& os, const Complex& c) {
+        if (c.imag >= 0)
+            os << c.real << " + " << c.imag << "i";
+        else
+            os << c.real << " - " << -c.imag << "i";
+        return os;
+    }
+
+  
+    friend istream& operator>>(istream& is, Complex& c) {
+        cout << "Enter real part: ";
+        is >> c.real;
+        cout << "Enter imaginary part: ";
+        is >> c.imag;
+        return is;
+    }
+};
+
+int main() {
+   
+    Complex c1(3, 2), c2(1, 7);
+
+    
+    Complex c3 = c1 + c2;
+    cout << "Addition: " << c1 << " + " << c2 << " = " << c3 << endl;
+
+
+    Complex c4 = c1 * c2;
+    cout << "Multiplication: " << c1 << " * " << c2 << " = " << c4 << endl;
+
+   
+    Complex c5;
+    cin >> c5;
+    cout << "Input complex number: " << c5 << endl;
+
+    return 0;
+}

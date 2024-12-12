@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>  
+#include <string>
+
+using namespace std;
+
+
+class Student {
+public:
+    string name;
+    int roll_no;
+    string class_name;
+    string division;
+    string dob;  
+    Student(string n, int r, string c, string d, string dob)
+        : name(n), roll_no(r), class_name(c), division(d), dob(dob) {}
+
+   
+    void display() const {
+        cout << "Name: " << name << ", Roll No: " << roll_no << ", Class: " << class_name 
+             << ", Division: " << division << ", Date of Birth: " << dob << endl;
+    }
+
+    
+    bool operator<(const Student& other) const {
+        return name < other.name;
+    }
+};
+
+int main() {
+    
+    vector<Student> students;
+
+   
+    students.push_back(Student("Vinay", 101, "11th", "A", "15-03-2005"));
+    students.push_back(Student("Raju", 102, "11th", "B", "20-05-2005"));
+    students.push_back(Student("Lucky", 103, "9th", "A", "10-01-2007"));
+    students.push_back(Student("Dhruv", 104, "11th", "C", "25-12-2005"));
+    students.push_back(Student("Ayush", 105, "12th", "B", "18-08-2004"));
+
+   
+    cout << "Sorting students by name...\n";
+    sort(students.begin(), students.end());
+
+   
+    cout << "\nSorted Student Records:\n";
+    for (const auto& student : students) {
+        student.display();
+    }
+
+   
+    string search_name;
+    cout << "\nEnter the name of the student to search: ";
+    cin >> search_name;
+
+    auto it = find_if(students.begin(), students.end(), [&](const Student& s) {
+        return s.name == search_name;
+    });
+
+    if (it != students.end()) {
+        cout << "\nStudent found:\n";
+        it->display();
+    } else {
+        cout << "\nStudent with name " << search_name << " not found.\n";
+    }
+
+    cout << "\nEnter the roll number of the student to search using binary search: ";
+    int search_roll_no;
+    cin >> search_roll_no;
+
+    auto roll_it = find_if(students.begin(), students.end(), [&](const Student& s) {
+        return s.roll_no == search_roll_no;
+    });
+
+    if (roll_it != students.end()) {
+        cout << "\nStudent found using binary search:\n";
+        roll_it->display();
+    } else {
+        cout << "\nStudent with roll number " << search_roll_no << " not found.\n";
+    }
+
+    return 0;
+}
