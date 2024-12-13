@@ -1,0 +1,112 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+
+using namespace std;
+
+class StudData {
+    string caddress;
+    long telno;
+    long dlno;
+
+public:
+    void getStudData() {
+        cout << "Enter Contact Address: ";
+        cin.ignore();
+        getline(cin, caddress);
+        cout << "Enter Telephone Number: ";
+        cin >> telno;
+        cout << "Enter Driving License Number: ";
+        cin >> dlno;
+    }
+
+    void dispStudData() const {
+        cout << "Contact Address: " << caddress << endl;
+        cout << "Telephone Number: " << telno << endl;
+        cout << "Driving License Number: " << dlno << endl;
+    }
+};
+
+class Student {
+    string name;
+    int roll_no;
+    string cls;
+    string division;
+    string dob;
+    string bloodgroup;
+    static int count;
+
+public:
+    Student() : roll_no(0), dob("dd/mm/yyyy") {
+        count++;
+    }
+
+    ~Student() {
+        count--;
+    }
+
+    static int getCount() {
+        return count;
+    }
+
+    void getData(StudData &st) {
+        cout << "Enter Student Name: ";
+        cin.ignore();
+        getline(cin, name);
+        cout << "Enter Roll Number: ";
+        cin >> roll_no;
+        cout << "Enter Class: ";
+        cin.ignore();
+        getline(cin, cls);
+        cout << "Enter Division: ";
+        getline(cin, division);
+        cout << "Enter Date of Birth: ";
+        getline(cin, dob);
+        cout << "Enter Blood Group: ";
+        getline(cin, bloodgroup);
+        st.getStudData();
+    }
+
+    void dispData(const StudData &st) const {
+        cout << "Student Name: " << name << endl;
+        cout << "Roll Number: " << roll_no << endl;
+        cout << "Class: " << cls << endl;
+        cout << "Division: " << division << endl;
+        cout << "Date of Birth: " << dob << endl;
+        cout << "Blood Group: " << bloodgroup << endl;
+        st.dispStudData();
+    }
+};
+
+int Student::count = 0;
+
+int main() {
+    vector<unique_ptr<Student>> students;
+    vector<unique_ptr<StudData>> studData;
+
+    char ch;
+    do {
+        auto student = make_unique<Student>();
+        auto data = make_unique<StudData>();
+
+        student->getData(*data);
+        students.push_back(move(student));
+        studData.push_back(move(data));
+
+        cout << "Do you want to add another student (y/n): ";
+        cin >> ch;
+    } while (ch == 'y' || ch == 'Y');
+
+    cout << "\n---------------------------------------------------------------" << endl;
+    for (size_t i = 0; i < students.size(); ++i) {
+        cout << "\nStudent " << i + 1 << ":" << endl;
+        students[i]->dispData(*studData[i]);
+    }
+
+    cout << "\n---------------------------------------------------------------" << endl;
+    cout << "Total Students: " << Student::getCount() << endl;
+    cout << "---------------------------------------------------------------\n";
+
+    return 0;
+}
